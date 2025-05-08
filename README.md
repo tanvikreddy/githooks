@@ -5,6 +5,7 @@ A collection of reusable git hooks for TypeScript projects.
 ## Available Hooks
 
 - **pre-commit**: Runs ESLint on staged TypeScript files and automatically fixes issues when possible.
+- **check-customapi-privilege**: Validates that customapi.xml files have the required privilege tags for security.
 
 ## Usage
 
@@ -20,6 +21,13 @@ repos:
     rev: v1.0.0  # Replace with the latest version
     hooks:
       - id: eslint
+      - id: check-customapi-privilege
+        files: customapi\.xml$
+        exclude: |
+          (?x)^(
+              customapi/myallowedapi1\.xml|
+              customapi/myallowedapi2\.xml
+          )$
 ```
 
 ### Option 2: Manual Installation

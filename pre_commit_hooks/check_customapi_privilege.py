@@ -34,7 +34,7 @@ def validate_customapi_security(filenames: Sequence[str]) -> int:
             exit_code = 1
 
     if exit_code:
-        print(f"\n{Colors.RED}{Colors.BOLD}[WARNING] SECURITY VALIDATION FAILED [WARNING]{Colors.NC}")
+        print(f"\n{Colors.RED}{Colors.BOLD}SECURITY VALIDATION FAILED{Colors.NC}")
         print(f"{Colors.RED}Some customapi.xml files are missing required security configuration.{Colors.NC}")
         print(f"\n{Colors.YELLOW}{Colors.BOLD}REQUIRED ACTION:{Colors.NC}")
         print(f"{Colors.YELLOW}Add {Colors.BOLD}<executeprivilegename>prvYourPrivilegeName</executeprivilegename>{Colors.NC}{Colors.YELLOW} tag to each custom API XML file{Colors.NC}")
@@ -45,11 +45,23 @@ def validate_customapi_security(filenames: Sequence[str]) -> int:
     return exit_code
 
 
-def main() -> int:
+def main(argv: Sequence[str] = None) -> int:
+    import argparse
+    import os
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--exclude', default=None, help='Regular expression for files to exclude')
+    args = parser.parse_args(argv)
+    
+    # Get the exclude pattern from pre-commit environment variable if available
+    exclude_pattern = args.exclude
+    if not exclude_pattern and 'PRE_COMMIT_EXCLUDE' in os.environ:
+        exclude_pattern = os.environ['PRE_COMMIT_EXCLUDE']
+    
     pattern = r'customapis?/.*?/customapi\.xml$'
-    customapi_files = sorted(added_files(include_expr=pattern))
+    customapi_files = sorted(added_files(include_expr=pattern, exclude_expr=exclude_pattern))
     return validate_customapi_security(customapi_files)
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    sys.exit(main(sys.argv[1:]))

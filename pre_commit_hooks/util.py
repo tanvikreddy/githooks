@@ -15,8 +15,13 @@ class Colors:
     NC = '\033[0m'  # No Color
 
 
-def added_files(include_expr: str = r'.*') -> list[str]:
-    """Return a list of staged files."""
+def added_files(include_expr: str = r'.*', exclude_expr: str = None) -> list[str]:
+    """Return a list of staged files.
+    
+    Args:
+        include_expr: Regular expression pattern for files to include
+        exclude_expr: Regular expression pattern for files to exclude
+    """
     result = subprocess.run(
         ['git', 'diff', '--cached', '--name-only', '--diff-filter=ACM'],
         stdout=subprocess.PIPE,
@@ -24,7 +29,9 @@ def added_files(include_expr: str = r'.*') -> list[str]:
         check=True,
     )
     files = result.stdout.splitlines()
-    return [
-        f for f in files
-        if re.search(include_expr, f)
-    ]
+    filtered_files = [f for f in files if re.search(include_expr, f)]
+    
+    if exclude_expr:
+        filtered_files = [f for f in filtered_files if not re.search(exclude_expr, f)]
+        
+    return filtered_files

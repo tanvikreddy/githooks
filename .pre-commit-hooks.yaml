@@ -4,3 +4,4 @@
   entry: check-customapi-privilege
   language: python
   types: [file]
+  pass_filenames: false
