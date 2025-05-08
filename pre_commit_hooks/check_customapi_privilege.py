@@ -9,7 +9,7 @@ from pre_commit_hooks.util import added_files, Colors
 
 def validate_customapi_security(filenames: Sequence[str]) -> int:
     print(f"\n{Colors.BLUE}{Colors.BOLD}[SCAN] CUSTOM API SECURITY VALIDATION{Colors.NC}")
-    print(f"{Colors.BLUE}────────────────────────────────────────────────────────{Colors.NC}")
+    print(f"{Colors.BLUE}--------------------------------------------------{Colors.NC}")
 
     if not filenames:
         print(f"{Colors.GREEN}[PASS] No customapi.xml files to validate{Colors.NC}")
