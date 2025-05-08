@@ -2,7 +2,7 @@
   name: ESLint for TypeScript
   description: Run ESLint on TypeScript files
   entry: powershell hooks/eslint
-  language: script
+  language: system
   files: \.(ts|tsx)$
   require_serial: true
   types: [file]
