@@ -4,3 +4,13 @@
   entry: check-added-large-files1
   language: python
   types: [file]
+  
+- id: eslint
+  name: ESLint for TypeScript and JavaScript
+  description: Run ESLint on TypeScript and JavaScript files
+  entry: pre_commit_hooks/eslint.ps1
+  language: script
+  files: \.(ts|tsx|js|jsx)$
+  require_serial: true
+  types: [file]
+  exclude: \.d\.ts$
