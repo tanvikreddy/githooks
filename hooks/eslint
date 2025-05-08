@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Exit on error
+set -e
+
+# Check if ESLint is installed
+if ! command -v eslint &> /dev/null; then
+    echo "ESLint could not be found, attempting to use project's ESLint..."
+    if [ -f "./node_modules/.bin/eslint" ]; then
+        ESLINT="./node_modules/.bin/eslint"
+    else
+        echo "Error: ESLint is not installed. Please install it globally or in your project."
+        exit 1
+    fi
+else
+    ESLINT="eslint"
+fi
+
+# Get staged TypeScript files
+files=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.tsx?$' || true)
+
+if [ -z "$files" ]; then
+    echo "No TypeScript files staged for commit."
+    exit 0
+fi
+
+echo "Running ESLint on staged TypeScript files..."
+
+# Run ESLint with auto-fix on staged files
+$ESLINT --fix $files
+
+# Add fixed files back to staging
+git add $files
+
+echo "ESLint check passed!"
+exit 0
