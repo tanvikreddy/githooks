@@ -1,9 +1,5 @@
-- id: eslint
-  name: ESLint for TypeScript
-  description: Run ESLint on TypeScript files
-  entry: eslint.ps1
-  language: system
-  files: \.(ts|tsx)$
-  require_serial: true
-  types: [file]
-  exclude: \.d\.ts$
+-   id: check-added-large-files
+    name: check for added large files
+    description: prevents giant files from being committed.
+    entry: check-added-large-files
+    language: python
