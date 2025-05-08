@@ -1,12 +1,7 @@
 from __future__ import annotations
 
-import argparse
-import os
 import subprocess
-from typing import Callable
-from typing import Iterable
 from typing import List
-from typing import Sequence
 from typing import Set
 
 
@@ -35,4 +30,13 @@ def added_files(
     cmd = ('git', 'ls-files', '--cached', '--others', '--exclude-standard')
     out = subprocess.check_output(cmd).decode('utf-8')
     files = set(zsplit(out))
-    return files
+    
+    # Apply include and exclude patterns
+    import re
+    include_pattern = re.compile(include_expr)
+    exclude_pattern = re.compile(exclude_expr)
+    
+    return {
+        f for f in files 
+        if include_pattern.search(f) and not exclude_pattern.search(f)
+    }
