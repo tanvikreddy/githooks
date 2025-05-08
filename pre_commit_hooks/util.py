@@ -3,7 +3,7 @@ from __future__ import annotations
 import subprocess
 from typing import List
 from typing import Set
-
+import re
 
 # ANSI color codes
 class Colors:
@@ -15,31 +15,16 @@ class Colors:
     NC = '\033[0m'  # No Color
 
 
-def zsplit(s: str) -> List[str]:
-    """Split on null bytes."""
-    parts = s.split('\0')
-    if parts and not parts[-1]:
-        parts.pop()
-    return parts
-
-
-def added_files(
-    include_expr: str = r'.*', exclude_expr: str = r'^$'
-) -> Set[str]:
-    """List all files that have been added to the git repository."""
-    cmd = ('git', 'ls-files', '--cached', '--others', '--exclude-standard')
-    out = subprocess.check_output(cmd).decode('utf-8')
-    files = set(zsplit(out))
-    for file in files:
-        print(f"  {Colors.RED}[ERROR] File not found: {file}{Colors.NC}")
-        return 1
-
-    # Apply include and exclude patterns
-    import re
-    include_pattern = re.compile(include_expr)
-    exclude_pattern = re.compile(exclude_expr)
-    
-    return {
-        f for f in files 
-        if include_pattern.search(f) and not exclude_pattern.search(f)
-    }
+def added_files(include_expr: str = r'.*') -> list[str]:
+    """Return a list of staged files."""
+    result = subprocess.run(
+        ['git', 'diff', '--cached', '--name-only', '--diff-filter=ACM'],
+        stdout=subprocess.PIPE,
+        encoding='utf-8',
+        check=True,
+    )
+    files = result.stdout.splitlines()
+    return [
+        f for f in files
+        if re.search(include_expr, f)
+    ]
