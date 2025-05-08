@@ -30,7 +30,10 @@ def added_files(
     cmd = ('git', 'ls-files', '--cached', '--others', '--exclude-standard')
     out = subprocess.check_output(cmd).decode('utf-8')
     files = set(zsplit(out))
-    
+    for file in files:
+        print(f"  {Colors.RED}[ERROR] File not found: {file}{Colors.NC}")
+        return 1
+
     # Apply include and exclude patterns
     import re
     include_pattern = re.compile(include_expr)
