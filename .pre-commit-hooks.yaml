@@ -1,5 +1,5 @@
--   id: check-added-large-files
+-   id: check-added-large-files1
     name: check for added large files
     description: prevents giant files from being committed.
-    entry: check-added-large-files
+    entry: check-added-large-files1
     language: python
