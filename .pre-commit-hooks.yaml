@@ -1,7 +1,7 @@
 - id: eslint
   name: ESLint for TypeScript
   description: Run ESLint on TypeScript files
-  entry: powershell hooks/eslint
+  entry: powershell -ExecutionPolicy Bypass -File hooks/eslint.ps1
   language: system
   files: \.(ts|tsx)$
   require_serial: true
