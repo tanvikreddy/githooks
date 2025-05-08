@@ -1,6 +1,6 @@
-- id: check-added-large-files1
-  name: Custom check for large files
-  description: Check for added files larger than a specified size (custom version)
-  entry: check-added-large-files1
+- id: check-customapi-privilege
+  name: Custom API Privilege Check
+  description: Check for added customapi.xml has privilege configured correctly.
+  entry: check-customapi-privilege
   language: python
   types: [file]
