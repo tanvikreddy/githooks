@@ -1,7 +1,7 @@
 - id: eslint
   name: ESLint for TypeScript
   description: Run ESLint on TypeScript files
-  entry: eslint
+  entry: eslint.ps1
   language: system
   files: \.(ts|tsx)$
   require_serial: true
