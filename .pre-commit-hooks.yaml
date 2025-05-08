@@ -5,5 +5,5 @@
   language: script
   files: \.(ts|tsx)$
   require_serial: true
-  types: [file, typescript]
+  types: [file]
   exclude: \.d\.ts$
