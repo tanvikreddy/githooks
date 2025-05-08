@@ -1,7 +1,7 @@
 - id: eslint
   name: ESLint for TypeScript
   description: Run ESLint on TypeScript files
-  entry: bash hooks/eslint
+  entry: pwsh hooks/eslint
   language: script
   files: \.(ts|tsx)$
   require_serial: true
