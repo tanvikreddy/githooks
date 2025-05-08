@@ -5,7 +5,7 @@ import re
 import sys
 from typing import Sequence
 
-from util import added_files, Colors
+from pre_commit_hooks.util import added_files, Colors
 
 def validate_customapi_security(filenames: Sequence[str]) -> int:
     print(f"\n{Colors.BLUE}{Colors.BOLD}🔍 CUSTOM API SECURITY VALIDATION{Colors.NC}")
