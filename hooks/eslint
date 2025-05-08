@@ -1,43 +1,36 @@
-#!/usr/bin/env pwsh
-# Exit immediately if a command fails
-$ErrorActionPreference = "Stop"
+#!/bin/bash
 
-Write-Host "Checking for ESLint..."
+# Exit on error
+set -e
 
 # Check if ESLint is installed
-$eslintPath = Get-Command eslint -ErrorAction SilentlyContinue
-
-if (-not $eslintPath) {
-    Write-Host "ESLint could not be found, attempting to use project's ESLint..."
-    if (Test-Path "./node_modules/.bin/eslint.cmd") {
-        $ESLINT = "./node_modules/.bin/eslint.cmd"
-    } else {
-        Write-Host "Error: ESLint is not installed. Please install it globally or in your project."
+if ! command -v eslint &> /dev/null; then
+    echo "ESLint could not be found, attempting to use project's ESLint..."
+    if [ -f "./node_modules/.bin/eslint" ]; then
+        ESLINT="./node_modules/.bin/eslint"
+    else
+        echo "Error: ESLint is not installed. Please install it globally or in your project."
         exit 1
-    }
-} else {
-    $ESLINT = "eslint"
-}
+    fi
+else
+    ESLINT="eslint"
+fi
 
 # Get staged TypeScript files
-$files = git diff --cached --name-only --diff-filter=ACMR | Where-Object { $_ -match '\.tsx?$' }
+files=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.tsx?$' || true)
 
-if (-not $files) {
-    Write-Host "No TypeScript files staged for commit."
+if [ -z "$files" ]; then
+    echo "No TypeScript files staged for commit."
     exit 0
-}
+fi
 
-Write-Host "Running ESLint on staged TypeScript files..."
+echo "Running ESLint on staged TypeScript files..."
 
-# Run ESLint with auto-fix on each file
-foreach ($file in $files) {
-    & $ESLINT --fix $file
-}
+# Run ESLint with auto-fix on staged files
+$ESLINT --fix $files
 
 # Add fixed files back to staging
-foreach ($file in $files) {
-    git add $file
-}
+git add $files
 
-Write-Host "ESLint check passed!"
+echo "ESLint check passed!"
 exit 0
