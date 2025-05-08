@@ -8,11 +8,11 @@ from typing import Sequence
 from pre_commit_hooks.util import added_files, Colors
 
 def validate_customapi_security(filenames: Sequence[str]) -> int:
-    print(f"\n{Colors.BLUE}{Colors.BOLD}🔍 CUSTOM API SECURITY VALIDATION{Colors.NC}")
+    print(f"\n{Colors.BLUE}{Colors.BOLD}[SCAN] CUSTOM API SECURITY VALIDATION{Colors.NC}")
     print(f"{Colors.BLUE}────────────────────────────────────────────────────────{Colors.NC}")
 
     if not filenames:
-        print(f"{Colors.GREEN}✓ No customapi.xml files to validate{Colors.NC}")
+        print(f"{Colors.GREEN}[PASS] No customapi.xml files to validate{Colors.NC}")
         return 0
 
     print(f"{Colors.YELLOW}Found {len(filenames)} customapi.xml file(s) to validate{Colors.NC}")
@@ -21,7 +21,7 @@ def validate_customapi_security(filenames: Sequence[str]) -> int:
 
     for file in filenames:
         if not os.path.isfile(file):
-            print(f"  {Colors.RED}✗ File not found: {file}{Colors.NC}")
+            print(f"  {Colors.RED}[ERROR] File not found: {file}{Colors.NC}")
             continue
 
         print(f"  {Colors.BLUE}Checking API security for:{Colors.NC} {Colors.YELLOW}{file}{Colors.NC}")
@@ -34,12 +34,12 @@ def validate_customapi_security(filenames: Sequence[str]) -> int:
             exit_code = 1
 
     if exit_code:
-        print(f"\n{Colors.RED}{Colors.BOLD}⚠️  SECURITY VALIDATION FAILED ⚠️{Colors.NC}")
+        print(f"\n{Colors.RED}{Colors.BOLD}[WARNING] SECURITY VALIDATION FAILED [WARNING]{Colors.NC}")
         print(f"{Colors.RED}Some customapi.xml files are missing required security configuration.{Colors.NC}")
         print(f"\n{Colors.YELLOW}{Colors.BOLD}REQUIRED ACTION:{Colors.NC}")
         print(f"{Colors.YELLOW}Add {Colors.BOLD}<executeprivilegename>prvYourPrivilegeName</executeprivilegename>{Colors.NC}{Colors.YELLOW} tag to each custom API XML file{Colors.NC}")
     else:
-        print(f"\n{Colors.GREEN}{Colors.BOLD}✓ API SECURITY VALIDATION PASSED{Colors.NC}")
+        print(f"\n{Colors.GREEN}{Colors.BOLD}[PASS] API SECURITY VALIDATION PASSED{Colors.NC}")
         print(f"{Colors.GREEN}All custom API files have proper security configuration.{Colors.NC}\n")
 
     return exit_code
