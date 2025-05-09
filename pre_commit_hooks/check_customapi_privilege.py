@@ -53,6 +53,10 @@ def main(argv: Sequence[str] = None) -> int:
     parser.add_argument('--exclude', default=None, help='Regular expression for files to exclude')
     args = parser.parse_args(argv)
     
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--exclude', default=None, help='Regular expression for files to exclude')
+    args = parser.parse_args(argv)
+    
     # Get the exclude pattern from pre-commit environment variable if available
     exclude_pattern = args.exclude
     print(f"\n{Colors.GREEN}{Colors.BOLD}[PASS] {exclude_pattern}{Colors.NC}")
