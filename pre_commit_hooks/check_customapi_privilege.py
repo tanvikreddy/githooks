@@ -55,9 +55,14 @@ def main(argv: Sequence[str] = None) -> int:
     
     # Get the exclude pattern from pre-commit environment variable if available
     exclude_pattern = args.exclude
+    print(f"\n{Colors.GREEN}{Colors.BOLD}[PASS] {exclude_pattern}{Colors.NC}")
+
     if not exclude_pattern and 'PRE_COMMIT_EXCLUDE' in os.environ:
         exclude_pattern = os.environ['PRE_COMMIT_EXCLUDE']
-    
+
+    print(f"\n{Colors.GREEN}{Colors.BOLD}[PASS1] {exclude_pattern}{Colors.NC}")
+
+
     pattern = r'customapis?/.*?/customapi\.xml$'
     customapi_files = sorted(added_files(include_expr=pattern, exclude_expr=exclude_pattern))
     return validate_customapi_security(customapi_files)
