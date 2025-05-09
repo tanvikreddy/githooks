@@ -2,5 +2,6 @@
   name: Custom API Privilege Check
   description: Check for added customapi.xml has privilege configured correctly.
   entry: check-customapi-privilege
+  files: customapi\.xml$
   language: python
   types: [file]
