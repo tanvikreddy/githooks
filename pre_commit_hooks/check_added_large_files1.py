@@ -51,7 +51,7 @@ def find_large_added_files(
             print(f'{filename} ({kb} KB) exceeds {maxkb} KB.')
             retv = 1
 
-    return retv
+    return 1
 
 
 def main(argv: Sequence[str] | None = None) -> int:
